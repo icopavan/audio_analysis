@@ -8,5 +8,7 @@ function y = calc_fft(data, fftsize)
 %  http://www.mathworks.co.uk/help/dsp/ref/windowfunction.html
   window        = blackman(fftsize);
   windowed_data = window.*data(1:datasize);
-  y             = fft(windowed_data, fftsize);
+
+  %% Perform FFT, Normalise then take magnitude of complex result
+  y             = abs( fft(windowed_data, fftsize)/fftsize );
 end %calc_fft
