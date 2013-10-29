@@ -1,6 +1,5 @@
 function run_calc_fft_spec;
   clear;
-  clear import; % Clear imported packages
    
   % Add package path
   addpath('../package/');
@@ -62,7 +61,7 @@ test_data_and_offset(1025, 1, 1025, 1024)
 
 
   function test_data_and_offset(d_size, offset, want_d_size, want_fft_size)
-    [datasize_result, fftsize_result] = audio_analysis.calc_fft_size( d_size, struct('offset',offset));
+    [fftsize_result, datasize_result] = audio_analysis.calc_fft_size( d_size, struct('offset',offset));
 
     if (datasize_result ~= want_d_size)
       disp(' ');
@@ -82,7 +81,7 @@ test_data_and_offset(1025, 1, 1025, 1024)
 
 
   function test_data_and_fftsize(d_size, fftsize, want_d_size, want_fft_size)
-    [datasize_result, fftsize_result] = audio_analysis.calc_fft_size( d_size, struct('fft_size',fftsize));
+    [fftsize_result, datasize_result] = audio_analysis.calc_fft_size( d_size, struct('fft_size',fftsize));
 
     if (datasize_result ~= want_d_size)
       disp(' ');
