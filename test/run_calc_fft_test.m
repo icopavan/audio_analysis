@@ -9,24 +9,26 @@ function run_calc_fft_test
   % import functions
   import audio_analysis.* ;
 
-  %% Data passed to functions
-  data_attrib.fin = 993    ;
-  data_attrib.fs  = 48000  ;
-  
-  %% Parameters of generated data, Verify result against
-  magnitude       = 10^(-0.1/20); % -0.1dB
-  fftsize         = 65536;
+  %% Parameters of generated data
+  fs              = 48000       ; % Hz
+  sine_freq       = 993         ; % Hz
+  sine_magnitude  = 10^(-0.1/20); % -0.1dB
+  fftsize         = 65536       ; 
+
+  %% Coherent frequency
+  fft_resolution  = fs/fftsize; 
+  sine_freq       = floor(sine_freq/fft_resolution)*fft_resolution ;
 
   %% Create test data
-  sim_length      = fftsize/data_attrib.fs    ;  % run sim for this time
-  t               = 0:1/data_attrib.fs:sim_length-1/data_attrib.fs;                
+  sim_length      = fftsize/fs            ;  % run sim for this time
+  t               = 0:1/fs:sim_length-1/fs;                
 
-  data            = ((magnitude)*sin(2*pi*data_attrib.fin*t))';
+  data            = ((sine_magnitude)*sin(2*pi*sine_freq*t))';
 
   measurement     = audio_analysis.calc_fft(data, fftsize);
   
   % Visualise data until Pass/Fail test added
-  plot(measurement);
+  plot( 20*log10(measurement) );
 
   error('No Pass/Fail criteria')
 
