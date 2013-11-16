@@ -8,7 +8,10 @@ function [norm_fft_result, norm_power_spec] = calc_fft(data, fftsize)
   if length(data) > fftsize
     data          = data(end-fft_size+1:end);
   end
-  
+
+  if length(data) < fft_size
+    error('audio.analysis.perform_norm_fft data length less than requested fft_length.')
+  end
    w.window              = ones(fftsize, 1);
    w.incoherent_power_gain = fftsize;
 
