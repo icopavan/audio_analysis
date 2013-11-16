@@ -11,7 +11,19 @@ function [norm_fft_result, norm_power_spec] = calc_fft(data, fftsize)
   
    w.window              = ones(fftsize, 1);
    w.incoherent_power_gain = fftsize;
-   windowed_data         = (data).*(w.window);  
+
+   try
+     windowed_data         = (data).*(w.window);  
+   catch ME
+     if (strcmp(ME.identifier,'MATLAB:dimagree'))
+        msg = ['Dimension mismatch occurred: \n', ...
+               '  Data is   : ', num2str(size(data)), '.\n', ...
+               '  Window is : ', num2str(size(w.window)),'.'];
+        causeException = MException('MATLAB:myCode:dimensions',msg);
+        ME = addCause(ME,causeException);
+     end
+     rethrow(ME)
+   end  
    
    %% Perform FFT, Normalise then take magnitude of complex result
    fft_result            = abs( fft(windowed_data) );
